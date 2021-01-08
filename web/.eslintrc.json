@@ -37,6 +37,7 @@
     "react/prop-types": "off",
     "prettier/prettier": "error",
     "no-use-before-define": "off",
+    "no-unused-expressions": "off",
     "import/extensions": [
       "error",
       "ignorePackages",
