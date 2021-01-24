@@ -36,35 +36,38 @@ const SignUp: React.FC = () => {
   const emailInputRef = useRef<TextInput>(null);
   const navigation = useNavigation();
 
-  const handleSignUp = useCallback(async (data: SignUpFormData) => {
-    try {
-      formRef.current?.setErrors({});
-      const schema = Yup.object().shape({
-        name: Yup.string().required('Nome obrigatório'),
-        email: Yup.string()
-          .required('E-mail obrigatório')
-          .email('Digite um e-mail válido'),
-        password: Yup.string().min(6, 'No mínimo 6 digitos'),
-      });
-      await schema.validate(data, {
-        abortEarly: false,
-      });
+  const handleSignUp = useCallback(
+    async (data: SignUpFormData) => {
+      try {
+        formRef.current?.setErrors({});
+        const schema = Yup.object().shape({
+          name: Yup.string().required('Nome obrigatório'),
+          email: Yup.string()
+            .required('E-mail obrigatório')
+            .email('Digite um e-mail válido'),
+          password: Yup.string().min(6, 'No mínimo 6 digitos'),
+        });
+        await schema.validate(data, {
+          abortEarly: false,
+        });
 
-      await api.post('/users', data);
+        await api.post('/users', data);
 
-      Alert.alert(
-        'Cadastro realizado com sucesso!',
-        'Você já pode fazer login na aplicação',
-      );
+        Alert.alert(
+          'Cadastro realizado com sucesso!',
+          'Você já pode fazer login na aplicação',
+        );
 
-      navigation.goBack();
-    } catch (error) {
-      const errors = getValidationErrors(error);
+        navigation.goBack();
+      } catch (error) {
+        const errors = getValidationErrors(error);
 
-      formRef.current?.setErrors(errors);
-      Alert.alert('Erro no cadastro', 'Verifique as informações');
-    }
-  }, []);
+        formRef.current?.setErrors(errors);
+        Alert.alert('Erro no cadastro', 'Verifique as informações');
+      }
+    },
+    [navigation],
+  );
 
   return (
     <>
